@@ -59,19 +59,7 @@ used versions for api and services are
 		    <artifactId>google-oauth-client</artifactId>
 		    <version>1.27.0</version>
 		</dependency>
-		
-		<dependency>
-		  <groupId>commons-codec</groupId>
-		  <artifactId>commons-codec</artifactId>
-		  <version>1.10</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.googlecode.googleplus/google-plus-java-api -->
-		<dependency>
-			<groupId>com.googlecode.googleplus</groupId>
-			<artifactId>google-plus-java-api</artifactId>
-			<version>0.0.3</version>
-		</dependency>
+
 
     </dependencies>
 

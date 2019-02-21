@@ -1,5 +1,4 @@
-package org.hispindia.googlesheet;
-
+package org.hisp.dhis.googlesheet;
 
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.*;
@@ -13,18 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GoogleSheetService {
-
+/**
+ * @author Mithilesh Kumar Thakur
+ */
+public class GoogleSheetService
+{
 
     private GoogleSheetConfig googleSheetConfig;
 
-    public GoogleSheetService(GoogleSheetConfig googleSheetConfig) {
+    public GoogleSheetService( GoogleSheetConfig googleSheetConfig )
+    {
         this.googleSheetConfig = googleSheetConfig;
-
 
     }
 
-
+    /*
     public void read() throws Exception {
         Connection con = DriverManager.getConnection(googleSheetConfig.getMYSQL_HOST() + googleSheetConfig.getMYSQL_DB(), googleSheetConfig.getMYSQL_USER(), googleSheetConfig.getMYSQL_PASSWORD());
         Sheets service = googleSheetConfig.getService();
@@ -69,58 +71,69 @@ public class GoogleSheetService {
         con.close();
 
     }
-
-    public void commitInDB(String statement, Connection connection) {
-        try {
+*/
+    public void commitInDB( String statement, Connection connection )
+    {
+        try
+        {
             // create Statement object
             Statement stmt = connection.createStatement();
             // send sql command
-            stmt.executeUpdate(statement);  // Create Table JDBC
+            stmt.executeUpdate( statement ); // Create Table JDBC
 
             // close the database connection
             stmt.close();
-        } catch (Exception e) {
+        }
+        catch ( Exception e )
+        {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println( e.getMessage() );
         }
 
     }
 
-
-    public void clear() throws IOException {
+    public void clear()
+        throws IOException
+    {
         Sheets service = googleSheetConfig.getService();
-        if (service != null) {
-            Spreadsheet spreadsheetResponse = service.spreadsheets().get(googleSheetConfig.getSPREAD_SHEET_ID()).setIncludeGridData(false)
-                    .execute();
+        if ( service != null )
+        {
+            Spreadsheet spreadsheetResponse = service.spreadsheets().get( googleSheetConfig.getSPREAD_SHEET_ID() )
+                .setIncludeGridData( false ).execute();
 
-            for (Sheet s : spreadsheetResponse.getSheets()) {
+            for ( Sheet s : spreadsheetResponse.getSheets() )
+            {
                 String sheet = s.getProperties().getTitle();
                 String range = sheet + "!A2:Z10000000";
                 ClearValuesRequest clearValuesRequest = new ClearValuesRequest();
-                service.spreadsheets().values().clear(googleSheetConfig.getSPREAD_SHEET_ID(), range, clearValuesRequest).execute();
+                service.spreadsheets().values()
+                    .clear( googleSheetConfig.getSPREAD_SHEET_ID(), range, clearValuesRequest ).execute();
             }
         }
     }
 
-    public void addData() throws IOException {
-
+    public void addData()
+        throws IOException
+    {
 
         List<List<Object>> fullData = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for ( int i = 0; i < 10; i++ )
+        {
             List<Object> data = new ArrayList<>();
-            data.add("919871813362");
-            data.add(i);
-            fullData.add(data);
+            data.add( "919871813362" );
+            data.add( i );
+            fullData.add( data );
         }
-        
-        
+
         ValueRange valueRange = new ValueRange();
-        valueRange.setValues(fullData);
+        valueRange.setValues( fullData );
 
         Sheets service = googleSheetConfig.getService();
-        if (service != null) {
-            service.spreadsheets().values().update(googleSheetConfig.getSPREAD_SHEET_ID(), "Sheet1!A2:L10000000", valueRange)
-                    .setValueInputOption("RAW").execute();
+        if ( service != null )
+        {
+            service.spreadsheets().values()
+                .update( googleSheetConfig.getSPREAD_SHEET_ID(), "Sheet1!A2:L10000000", valueRange )
+                .setValueInputOption( "RAW" ).execute();
         }
     }
 
